@@ -2,11 +2,34 @@
 <html>
 <head>
   <title>Cube Quest</title>
+  <style>
+    #welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    #start-button {
+      padding: 16px 32px;
+      font-size: 24px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    #start-button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
 </head>
-  
-  
 <body>
-  <canvas id='canvas' width='500' height='500'></canvas>
+  <div id="welcome-screen">
+    <h1>Welcome to Cube Quest!</h1>
+    <p>Press the start button to begin your adventure!</p>
+    <button id="start-button">Start</button>
+  </div>
+  <canvas id='canvas' width='500' height='500' style="display:none;"></canvas>
   <script>
     window.onerror = alert;
     var canvas = document.getElementById('canvas');
@@ -15,13 +38,11 @@
     var draw = canvas.getContext('2d');
     var x = 0;
     var y = 0;
-    
     function render() {
       draw.clearRect(0, 0, 500, 500);
       draw.fillStyle = '#FF0000';
       draw.fillRect(x, y, 50, 50);
     }
-    
     var intervals = [];
     document.addEventListener('keydown', function(e) {
       if (intervals[e.keyCode] === undefined) {
@@ -32,7 +53,6 @@
       clearInterval(intervals[e.keyCode]);
       intervals[e.keyCode] = undefined;
     });
-    
     function looper(e) {
       if (e.keyCode == 37) {
         if (collider(x-1, y)) x -= 1;
@@ -44,21 +64,14 @@
         if (collider(x, y+1)) y += 1;
       }
     }
-    
     function collider(x, y) {
       return !(x < 0 || x + 50 > 500 || y < 0 || y + 50 > 500);
     }
-    
-    setInterval(render, 1000/60);
+    document.getElementById('start-button').addEventListener('click', function() {
+      document.getElementById('welcome-screen').style.display = 'none';
+      document.getElementById('canvas').style.display = 'block';
+      setInterval(render, 1000/60);
+    });
   </script>
 </body>
-
-
-
-<style>
-  canvas {
-    border: 1px solid black;
-  }
-</style>
-
 </html>
